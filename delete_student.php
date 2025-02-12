@@ -21,13 +21,13 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         // Delete related reports from the report table
         $sqlDeleteReports = "DELETE FROM report WHERE sid = :id";
         $stmtDeleteReports = $conn->prepare($sqlDeleteReports);
-        $stmtDeleteReports->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmtDeleteReports->bindParam(':id', $userId, PDO::PARAM_STR);
         $stmtDeleteReports->execute();
 
         // Fetch the user's photo
         $sqlPhoto = "SELECT photo FROM table_the_iot_projects WHERE id = :id";
         $stmtPhoto = $conn->prepare($sqlPhoto);
-        $stmtPhoto->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmtPhoto->bindParam(':id', $userId, PDO::PARAM_STR);
         $stmtPhoto->execute();
         $user = $stmtPhoto->fetch(PDO::FETCH_ASSOC);
 
@@ -40,7 +40,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
             // Delete the user from the database
             $sqlDelete = "DELETE FROM table_the_iot_projects WHERE id = :id";
             $stmtDelete = $conn->prepare($sqlDelete);
-            $stmtDelete->bindParam(':id', $userId, PDO::PARAM_INT);
+            $stmtDelete->bindParam(':id', $userId, PDO::PARAM_STR);
 
             if ($stmtDelete->execute()) {
                 // Commit the transaction

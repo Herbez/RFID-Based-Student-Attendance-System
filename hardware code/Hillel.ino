@@ -95,7 +95,7 @@ String sendCardDataToServer(String UIDresultSend) {
     String postData = "UIDresult=" + UIDresultSend;
 
     // First request: send to getUID.php
-    http.begin(client, "http://192.168.152.183/Hillel/getUID.php");
+    http.begin(client, "http://192.168.2.183/Hillel/getUID.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     httpResponseCode = http.POST(postData);
@@ -104,7 +104,7 @@ String sendCardDataToServer(String UIDresultSend) {
     http.end();
 
         // Second request: send to check_card.php.php
-    http.begin(client, "http://192.168.152.183/Hillel/check_card.php");
+    http.begin(client, "http://192.168.2.183/Hillel/check_card.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     httpResponseCode = http.POST(postData);
@@ -113,7 +113,7 @@ String sendCardDataToServer(String UIDresultSend) {
     http.end();
 
     // Third request: send to fetch_card_id.php
-    http.begin(client, "http://192.168.152.183/Hillel/fetch_card_id.php?id=" + UIDresultSend);
+    http.begin(client, "http://192.168.2.183/Hillel/fetch_card_id.php?id=" + UIDresultSend);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     httpResponseCode = http.POST(postData);
@@ -138,23 +138,38 @@ void displayResponse(String response) {
   DeserializationError error = deserializeJson(doc, response);
 
  if (!error) {
+    String uid = doc["id"].as<String>();
     String name = doc["name"].as<String>();
     int payment_status = doc["payment_status"].as<int>();
 
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Name: " + name);
+    lcd.setCursor(0, 1);
+    lcd.print("RegNo: " + uid);
 
     if (payment_status == 1 ) {
-      lcd.setCursor(0, 1);
-      lcd.print("Allowed");
-    } else if(payment_status == 2 || payment_status ==3){
-      lcd.setCursor(0, 1);
-      lcd.print("Not Allowed");
-    }  else {
+      delay(3000);
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print("Not Registered");
+      lcd.print("Allowed");
+      lcd.setCursor(0, 1);
+      lcd.print("Welcome!");
+      delay(200);
+    } else if(payment_status == 2 || payment_status ==3){
+      delay(3000);
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Not Allowed");
+      lcd.setCursor(0, 1);
+      lcd.print("Sorry");
+      delay(200);
+    }  else {
+      lcd.setCursor(0, 0);
+      lcd.print("You Are Not");
+      lcd.setCursor(0, 1);
+      lcd.print("Registered ");
+      delay(200);
     }
   } 
 

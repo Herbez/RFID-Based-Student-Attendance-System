@@ -135,7 +135,7 @@ $all_users = $query_all->fetchAll(PDO::FETCH_ASSOC); // Multiple rows
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
-                                                                <th>Card id</th>
+                                                                <th>Reg Number</th>
                                                                 <th>Student Name</th>
                                                                 <th>Level of Year</th>
                                                                 <th>Class</th>

@@ -131,14 +131,14 @@ $all_users = $query_all->fetchAll(PDO::FETCH_ASSOC); // Multiple rows
                                                                 <thead>
                                                                     <tr>
                                                                         <th>#</th>
-                                                                        <th>Card id</th>
+                                                                        <th>Reg Number</th>
                                                                         <th>Student Name</th>
                                                                         <th>Level of Year</th>
                                                                         <th>Class</th>
                                                                         <th>Payment Status</th>
-                                                                        <th>Date & Time</th>
                                                                         <th>Attendance</th>
-
+                                                                        <th>Date & Time</th>
+                                                                        
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -161,8 +161,7 @@ $all_users = $query_all->fetchAll(PDO::FETCH_ASSOC); // Multiple rows
                                                                                     }
                                                                                     ?>
                                                                                 </td>
-                                                                                <td><?php echo htmlspecialchars($row['datetime']); ?></td>
-                                                                                
+                                                                                                                                                                
                                                                                 <td>
                                                                                     <?php
                                                                                     if ($row['payment_status'] == 1) {
@@ -175,6 +174,8 @@ $all_users = $query_all->fetchAll(PDO::FETCH_ASSOC); // Multiple rows
                                                                                     ?>
 
                                                                                 </td>
+
+                                                                                <td><?php echo htmlspecialchars($row['datetime']); ?></td>
 
                                                                             </tr>
                                                                         <?php endforeach; ?>

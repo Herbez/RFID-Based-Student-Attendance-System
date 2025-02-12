@@ -4,7 +4,7 @@ session_start();
 require 'dbconn.php';
 
 if (!isset($_SESSION["email"])) {
-    header("Location: sign-in.php");
+    header("Location: students.php");
     exit();
 }
 
@@ -121,102 +121,102 @@ if (isset($_SESSION["email"])) {
 
                         <?php
                         // Check if the user ID is provided
-                        if (isset($_GET['id']) && !empty($_GET['id'])) {
-                            $userId = $_GET['id'];
-                            // Fetch the user's details to edit
-                            $sql_one_user = "SELECT * FROM table_the_iot_projects WHERE id = :id";
-                            $query_all = $conn->prepare($sql_one_user);
-                            $query_all->bindParam(':id', $userId, PDO::PARAM_INT);
-                            $query_all->execute();
-                            $one_user = $query_all->fetch(PDO::FETCH_ASSOC); // Single row for one user
 
-                            if ($one_user) {
+                        $userId = $_GET['id'] ?? '';
+
+                        $sql_one_user = "SELECT * FROM table_the_iot_projects WHERE id = :id";
+                        $query_all = $conn->prepare($sql_one_user);
+                        $query_all->bindParam(':id', $userId, PDO::PARAM_STR);
+                        $query_all->execute();
+                        $one_user = $query_all->fetch(PDO::FETCH_ASSOC);
+
+
+                        if ($one_user) {
                         ?>
 
-                                <div class="pcoded-inner-content">
-                                    <div class="main-body">
-                                        <div class="page-wrapper">
-                                            <div class="page-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <h5>Edit Student Form</h5>
-                                                                <span>Add class of <code>.form-control</code> with
-                                                                    <code>&lt;input&gt;</code> tag</span>
-                                                            </div>
-                                                            <div class="card-block">
-                                                                <form method="post" action="insertDB.php" enctype="multipart/form-data" novalidate>
-                                                                    <!-- Hidden input for student ID -->
-                                                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($one_user['id']); ?>">
+                            <div class="pcoded-inner-content">
+                                <div class="main-body">
+                                    <div class="page-wrapper">
+                                        <div class="page-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Edit Student Form</h5>
+                                                            <span>Add class of <code>.form-control</code> with
+                                                                <code>&lt;input&gt;</code> tag</span>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <form method="post" action="update_student.php" enctype="multipart/form-data" novalidate>
+                                                                <!-- Hidden input for student ID -->
+                                                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($one_user['id']); ?>">
 
-                                                                    <div class="form-group row justify-content-center text-center">
-                                                                        <?php if (!empty($one_user['photo'])) : ?>
-                                                                            <img src="uploads/<?php echo htmlspecialchars($one_user['photo']); ?>" alt="User Photo" style="width: 100px; height: 100px; object-fit: cover;border-radius: 50%;">
-                                                                        <?php else : ?>
-                                                                            <span>No Photo</span>
-                                                                        <?php endif; ?>
+                                                                <div class="form-group row justify-content-center text-center">
+                                                                    <?php if (!empty($one_user['photo'])) : ?>
+                                                                        <img src="uploads/<?php echo htmlspecialchars($one_user['photo']); ?>" alt="User Photo" style="width: 100px; height: 100px; object-fit: cover;border-radius: 50%;">
+                                                                    <?php else : ?>
+                                                                        <span>No Photo</span>
+                                                                    <?php endif; ?>
+                                                                </div>
+
+
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Student Name</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control" id="names" name="name"
+                                                                            value="<?php echo htmlspecialchars($one_user['name']); ?>">
+                                                                        <span class="messages"></span>
                                                                     </div>
+                                                                </div>
 
-
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Student Name</label>
-                                                                        <div class="col-sm-10">
-                                                                            <input type="text" class="form-control" id="names" name="name"
-                                                                                value="<?php echo htmlspecialchars($one_user['name']); ?>">
-                                                                            <span class="messages"></span>
-                                                                        </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Level of Study</label>
+                                                                    <div class="col-sm-10">
+                                                                        <select name="year_of_study" class="form-control">
+                                                                            <option value="">Select the Level</option>
+                                                                            <option value="First year" <?php echo ($one_user['year_of_study'] == 'First year') ? 'selected' : ''; ?>>First year</option>
+                                                                            <option value="Second year" <?php echo ($one_user['year_of_study'] == 'Second year') ? 'selected' : ''; ?>>Second year</option>
+                                                                            <option value="Third year" <?php echo ($one_user['year_of_study'] == 'Third year') ? 'selected' : ''; ?>>Third year</option>
+                                                                            <option value="Fourth year" <?php echo ($one_user['year_of_study'] == 'Fourth year') ? 'selected' : ''; ?>>Fourth year</option>
+                                                                        </select>
                                                                     </div>
+                                                                </div>
 
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Level of Study</label>
-                                                                        <div class="col-sm-10">
-                                                                            <select name="year_of_study" class="form-control">
-                                                                                <option value="">Select the Level</option>
-                                                                                <option value="First year" <?php echo ($one_user['year_of_study'] == 'First year') ? 'selected' : ''; ?>>First year</option>
-                                                                                <option value="Second year" <?php echo ($one_user['year_of_study'] == 'Second year') ? 'selected' : ''; ?>>Second year</option>
-                                                                                <option value="Third year" <?php echo ($one_user['year_of_study'] == 'Third year') ? 'selected' : ''; ?>>Third year</option>
-                                                                                <option value="Fourth year" <?php echo ($one_user['year_of_study'] == 'Fourth year') ? 'selected' : ''; ?>>Fourth year</option>
-                                                                            </select>
-                                                                        </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Class</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control" id="class" name="class"
+                                                                            value="<?php echo htmlspecialchars($one_user['class']); ?>">
+                                                                        <span class="messages"></span>
                                                                     </div>
+                                                                </div>
 
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Class</label>
-                                                                        <div class="col-sm-10">
-                                                                            <input type="text" class="form-control" id="class" name="class"
-                                                                                value="<?php echo htmlspecialchars($one_user['class']); ?>">
-                                                                            <span class="messages"></span>
-                                                                        </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Payment Status</label>
+                                                                    <div class="col-sm-10">
+                                                                        <select name="payment_status" class="form-control">
+                                                                            <option value="opt1">Select fees status</option>
+                                                                            <option value="1" <?php echo ($one_user['payment_status'] == '1') ? 'selected' : ''; ?>>Full Payment</option>
+                                                                            <option value="2" <?php echo ($one_user['payment_status'] == '2') ? 'selected' : ''; ?>>Partial payment</option>
+                                                                            <option value="3" <?php echo ($one_user['payment_status'] == '3') ? 'selected' : ''; ?>>No Payment</option>
+                                                                        </select>
                                                                     </div>
+                                                                </div>
 
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Payment Status</label>
-                                                                        <div class="col-sm-10">
-                                                                            <select name="payment_status" class="form-control">
-                                                                                <option value="opt1">Select fees status</option>
-                                                                                <option value="1" <?php echo ($one_user['payment_status'] == '1') ? 'selected' : ''; ?>>Full Payment</option>
-                                                                                <option value="2" <?php echo ($one_user['payment_status'] == '2') ? 'selected' : ''; ?>>Partial payment</option>
-                                                                                <option value="3" <?php echo ($one_user['payment_status'] == '3') ? 'selected' : ''; ?>>No Payment</option>
-                                                                            </select>
-                                                                        </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Upload Photo</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="file" name="photo" class="form-control">
                                                                     </div>
+                                                                </div>
 
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Upload Photo</label>
-                                                                        <div class="col-sm-10">
-                                                                            <input type="file" name="photo" class="form-control">
-                                                                        </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2"></label>
+                                                                    <div class="col-sm-10">
+                                                                        <button type="submit" name="update" class="btn btn-primary m-b-0">Submit</button>
                                                                     </div>
-
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-2"></label>
-                                                                        <div class="col-sm-10">
-                                                                            <button type="submit" class="btn btn-primary m-b-0">Submit</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -224,9 +224,9 @@ if (isset($_SESSION["email"])) {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
                         <?php
-                            }
                         }
                         ?>
 

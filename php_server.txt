@@ -1,0 +1,18 @@
+HOW TO RUN PHP SERVER
+1. Install PHP server extension in Vs Code
+   - Go to extension settings
+   - under " Phpserver: Ip" Put >> 0.0.0.0
+   - under " Phpserver: PHP Path" Put >> C:\xampp\php\php.exe
+
+2. In Google Chrome
+   - Add " Live Server Web Extension "
+   - Under " Actual Server Address" Put >> http://127.0.0.1:5500
+   - Under " Live Server Address" Put >> http://127.0.0.1:5500
+
+3. In your project
+   - Right clik in "index.php/html" 
+   - Select "Php Server: serve project"
+   - Click " Live server in VsCode taskbar "
+   - In the browser, type" localhost:3000/index.html(php) "
+   - In phone browser, type" Your PC Ip Address:3000 "
+   - Example: 192.162.1.183:3000
